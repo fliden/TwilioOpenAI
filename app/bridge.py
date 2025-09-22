@@ -3,7 +3,6 @@ import base64
 import contextlib
 import json
 import logging
-from typing import List, Optional
 
 import websockets
 from fastapi import WebSocket
@@ -21,15 +20,15 @@ class TwilioRealtimeBridge:
     def __init__(self, websocket: WebSocket, settings: Settings) -> None:
         self.websocket = websocket
         self.settings = settings
-        self.openai_ws: Optional[websockets.WebSocketClientProtocol] = None
+        self.openai_ws: websockets.WebSocketClientProtocol | None = None
 
-        self.stream_sid: Optional[str] = None
+        self.stream_sid: str | None = None
         self.latest_media_timestamp: int = 0
-        self.last_assistant_item: Optional[str] = None
-        self.mark_queue: List[str] = []
-        self.response_start_timestamp_twilio: Optional[int] = None
+        self.last_assistant_item: str | None = None
+        self.mark_queue: list[str] = []
+        self.response_start_timestamp_twilio: int | None = None
 
-        self._tasks: List[asyncio.Task[None]] = []
+        self._tasks: list[asyncio.Task[None]] = []
 
     async def start(self) -> None:
         subprotocol_header = self.websocket.headers.get("sec-websocket-protocol")
@@ -117,7 +116,8 @@ class TwilioRealtimeBridge:
                     {
                         "type": "input_text",
                         "text": (
-                            "Deliver a short initial spoken introduction defined in your system instructions, then wait for the caller's response."
+                            "Deliver the short introduction described in your system "
+                            "instructions, then wait for the caller's response."
                         ),
                     }
                 ],

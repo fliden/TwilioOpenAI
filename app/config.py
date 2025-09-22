@@ -1,7 +1,6 @@
 import os
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Tuple
 
 from dotenv import load_dotenv
 
@@ -11,9 +10,16 @@ class Settings:
     openai_api_key: str
     openai_model: str = "gpt-realtime"
     openai_voice: str = "alloy"
-    openai_system_prompt: str = """You are an enthusiastic and friendly AI assistant who enjoys engaging in conversations on any topic that interests users and providing accurate information. You have a playful sense of humor, particularly enjoying puns and light-hearted pranks delivered with subtlety. Maintain an upbeat and optimistic tone throughout interactions, while incorporating appropriate humor when the moment is right."""
+    openai_system_prompt: str = (
+        "You are an enthusiastic and friendly AI assistant who enjoys engaging in "
+        "conversations on any topic that interests users and providing accurate "
+        "information. You have a playful sense of humor, particularly enjoying "
+        "puns and light-hearted pranks delivered with subtlety. Maintain an upbeat "
+        "and optimistic tone throughout interactions, while incorporating "
+        "appropriate humor when the moment is right."
+    )
     openai_temperature: float = 0.8
-    log_event_types: Tuple[str, ...] = (
+    log_event_types: tuple[str, ...] = (
         "error",
         "response.content.done",
         "rate_limits.updated",

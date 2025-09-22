@@ -1,4 +1,5 @@
 import logging
+
 from fastapi import APIRouter, Depends, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, JSONResponse
 from twilio.twiml.voice_response import Connect, VoiceResponse
@@ -14,7 +15,8 @@ router = APIRouter()
 def build_stream_url(request: Request) -> str:
     """Derive the public wss:// URL that Twilio should stream media to."""
     url = request.url
-    # Force secure WebSocket for Twilio even if request arrived via http during local testing.
+    # Force secure WebSocket even when the inbound request arrived via http during local
+    # testing.
     scheme = "wss" if url.scheme in {"http", "https"} else "ws"
     return str(url.replace(path="/media-stream", scheme=scheme))
 
@@ -33,7 +35,10 @@ async def incoming_call(
     stream_url = build_stream_url(request)
     response = VoiceResponse()
     response.say(
-        "Please wait while we connect your call to the A. I. voice assistant, powered by Twilio and the Open A I Realtime API",
+        (
+            "Please wait while we connect your call to the A. I. voice assistant, "
+            "powered by Twilio and the Open A I Realtime API"
+        ),
         voice=settings.twilio_intro_voice,
     )
     response.pause(length=1)
