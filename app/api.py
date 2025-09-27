@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from fastapi import APIRouter, Depends, Request, WebSocket, WebSocketDisconnect
@@ -59,5 +60,7 @@ async def media_stream(
         await bridge.run()
     except WebSocketDisconnect:
         logger.info("Twilio WebSocket disconnected")
+    except asyncio.CancelledError:
+        logger.info("Media stream cancelled during shutdown")
     finally:
         await bridge.shutdown()

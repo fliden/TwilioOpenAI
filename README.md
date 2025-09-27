@@ -47,6 +47,63 @@ Load the variables by exporting them or by keeping them in `.env` (automatically
    ```
 3. Optionally watch verbose logs by setting `LOG_LEVEL=debug` before running uvicorn.
 
+## Deploying to Railway
+
+Railway provides an easy way to deploy your TwilioOpenAI service with automatic HTTPS and public URLs.
+
+### Prerequisites
+- Railway account ([railway.app](https://railway.app))
+- Railway CLI installed: `npm install -g @railway/cli` or `curl -fsSL https://railway.app/install.sh | sh`
+
+### Deployment Steps
+
+1. **Login to Railway:**
+   ```bash
+   railway login
+   ```
+
+2. **Initialize and deploy your project:**
+   ```bash
+   railway init
+   railway up
+   ```
+
+3. **Set required environment variables:**
+   ```bash
+   # Required: Your OpenAI API key
+   railway variables set "OPENAI_API_KEY=sk-your-openai-key-here"
+   
+   # Optional: Customize your AI assistant
+   railway variables set "OPENAI_SYSTEM_PROMPT=You are a helpful AI assistant..."
+   railway variables set "OPENAI_RESPONSE_VOICE=alloy"
+   railway variables set "OPENAI_TEMPERATURE=0.8"
+   railway variables set "TWILIO_INTRO_VOICE=Google.en-US-Chirp3-HD-Aoede"
+   ```
+
+4. **Get your public URL:**
+   ```bash
+   railway domain
+   ```
+   This will show your Railway URL (e.g., `https://your-project-production.up.railway.app`)
+
+### Alternative: Set Variables via Railway Dashboard
+1. Go to [railway.app](https://railway.app) and select your project
+2. Navigate to the **Variables** tab
+3. Add the following variables:
+   - `OPENAI_API_KEY`: Your OpenAI API key
+   - `OPENAI_SYSTEM_PROMPT`: (Optional) Custom system prompt
+   - `OPENAI_RESPONSE_VOICE`: (Optional) Default: "alloy"
+   - `OPENAI_TEMPERATURE`: (Optional) Default: "0.8"
+   - `TWILIO_INTRO_VOICE`: (Optional) Default: "Google.en-US-Chirp3-HD-Aoede"
+
+### Update Twilio Configuration
+1. In your Twilio Console, go to **Phone Numbers → Manage → Active Numbers**
+2. Select your Twilio phone number
+3. Update **A CALL COMES IN** webhook to: `POST https://your-railway-url.up.railway.app/incoming-call`
+4. Save the configuration
+
+Your service is now live and accessible via the Railway URL!
+
 ## Twilio Configuration
 1. Navigate to **Phone Numbers → Manage → Active Numbers**, select your number, and update **A CALL COMES IN** to:
    - **Webhook**: `POST https://<ngrok-domain>/incoming-call`
