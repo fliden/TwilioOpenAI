@@ -71,13 +71,13 @@ Railway provides an easy way to deploy your TwilioOpenAI service with automatic 
 3. **Set required environment variables:**
    ```bash
    # Required: Your OpenAI API key
-   railway variables set "OPENAI_API_KEY=sk-your-openai-key-here"
+   railway variables --set "OPENAI_API_KEY=sk-your-openai-key-here"
    
    # Optional: Customize your AI assistant
-   railway variables set "OPENAI_SYSTEM_PROMPT=You are a helpful AI assistant..."
-   railway variables set "OPENAI_RESPONSE_VOICE=alloy"
-   railway variables set "OPENAI_TEMPERATURE=0.8"
-   railway variables set "TWILIO_INTRO_VOICE=Google.en-US-Chirp3-HD-Aoede"
+   railway variables --set "OPENAI_SYSTEM_PROMPT=You are a helpful AI assistant..."
+   railway variables --set "OPENAI_RESPONSE_VOICE=alloy"
+   railway variables --set "OPENAI_TEMPERATURE=0.8"
+   railway variables --set "TWILIO_INTRO_VOICE=Google.en-US-Chirp3-HD-Aoede"
    ```
 
 4. **Get your public URL:**
